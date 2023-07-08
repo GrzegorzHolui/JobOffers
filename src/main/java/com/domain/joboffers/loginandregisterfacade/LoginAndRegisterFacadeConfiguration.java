@@ -1,4 +1,4 @@
-package com.domain.joboffers.LoginAndRegisterFacade;
+package com.domain.joboffers.loginandregisterfacade;
 
 public class LoginAndRegisterFacadeConfiguration {
 

@@ -1,4 +1,4 @@
-package com.domain.joboffers.OfferFacade;
+package com.domain.joboffers.offerfacade;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package com.domain.joboffers.OfferFacade;
+package com.domain.joboffers.offerfacade;
 
 public class OfferFacadeConfiguration {
 
@@ -6,7 +6,7 @@ public class OfferFacadeConfiguration {
         return new OfferFacade();
     }
 
-    public OfferFacade offerFacadeTest() {
+    public OfferFacade offerFacadeTest(String a) {
         return new OfferFacade();
     }
 }
