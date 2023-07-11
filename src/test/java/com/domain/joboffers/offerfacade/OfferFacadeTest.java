@@ -13,6 +13,7 @@ import org.springframework.dao.DuplicateKeyException;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -111,4 +112,28 @@ class OfferFacadeTest {
                 .hasMessage("Offer with id cos not found");
 
     }
+
+    @Test
+    @DisplayName("OfferFacade_findAllOffers")
+    void findAllOffers_ThenShouldReturnAllOffersWhichAreInDataBase() {
+        //given
+        EarningsRequestDto earnings = new EarningsRequestDto(BigDecimal.valueOf(2000), BigDecimal.valueOf(3000));
+        OfferRequestDto offer1 = new OfferRequestDto("https://www.youtube.com", "jobname",
+                "nameOfCompany", earnings);
+        OfferRequestDto offer2 = new OfferRequestDto("https://www.google.pl", "jobname",
+                "nameOfCompany", earnings);
+        OfferRequestDto offer3 = new OfferRequestDto("https://translate.google.com", "jobname",
+                "nameOfCompany", earnings);
+
+        //when
+        offerFacade.saveOffer(offer1);
+        offerFacade.saveOffer(offer2);
+        offerFacade.saveOffer(offer3);
+
+        //then
+        List<OfferResponseDto> resultOffers = offerFacade.findAllOffers();
+        int expectedSize = 3;
+        assertThat(resultOffers.size()).isEqualTo(expectedSize);
+    }
+
 }

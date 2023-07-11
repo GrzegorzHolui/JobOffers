@@ -38,4 +38,11 @@ public class OfferFacade {
                 .orElseThrow(() -> new OfferNotFoundException(id));
     }
 
+    public List<OfferResponseDto> findAllOffers() {
+        List<Offer> allOffers = offerRepository.findAllOffers();
+        List<OfferResponseDto> result = allOffers.stream().map(offer -> offerModelMapper.mapOfferResponseDtoToOffer(offer))
+                .toList();
+        return result;
+    }
+
 }

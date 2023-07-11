@@ -1,9 +1,6 @@
 package com.domain.joboffers.offerfacade;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import org.springframework.dao.DuplicateKeyException;
 
@@ -12,7 +9,7 @@ class OfferRepositoryTestImpl implements OfferRepository {
 
     @Override
     public Offer save(Offer entity) {
-        if (dataBase.values().stream().anyMatch(offer -> offer.linkToOffer().equals(offer.linkToOffer()))) {
+        if (dataBase.values().stream().anyMatch(offer -> offer.linkToOffer().equals(entity.linkToOffer()))) {
             throw new DuplicateKeyException(String.format("Offer with offerUrl [%s] already exists", entity.linkToOffer()));
         }
         String id = UUID.randomUUID().toString();
@@ -23,7 +20,6 @@ class OfferRepositoryTestImpl implements OfferRepository {
                 .nameOfCompany(entity.nameOfCompany())
                 .earnings(entity.earnings())
                 .build();
-
         dataBase.put(offer.id(), offer);
         return offer;
     }
@@ -31,5 +27,10 @@ class OfferRepositoryTestImpl implements OfferRepository {
     @Override
     public Optional<Offer> findOfferById(String id) {
         return Optional.ofNullable(dataBase.get(id));
+    }
+
+    @Override
+    public List<Offer> findAllOffers() {
+        return dataBase.values().stream().toList();
     }
 }
