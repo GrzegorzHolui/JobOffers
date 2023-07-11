@@ -1,9 +1,13 @@
 package com.domain.joboffers.offerfacade;
 
-import com.domain.joboffers.offerfacade.dto.OfferDto;
+import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
+import com.domain.joboffers.offerfacade.dto.OfferResponseDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface OfferModelMapper {
-    OfferDto mapOfferToOfferDto(Offer offer);
+interface OfferModelMapper {
+    OfferResponseDto mapOfferResponseDtoToOffer(Offer offer);
+
+    Offer mapOfferRequestDtoToOffer(OfferRequestDto OfferRequestDto);
+
 }

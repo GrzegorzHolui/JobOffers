@@ -1,5 +1,5 @@
 package com.domain.joboffers.offerfacade;
 
-public interface OfferReposiotry {
+interface OfferRepository {
     Offer save(Offer offer);
 }
