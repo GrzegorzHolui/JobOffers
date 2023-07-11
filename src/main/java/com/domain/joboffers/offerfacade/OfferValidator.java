@@ -11,8 +11,8 @@ class OfferValidator {
 
     List<ValidatorMessage> validateData(Offer offer) {
         List<ValidatorMessage> resultMessages = new ArrayList<>();
-        List<ValidatorMessage> validateEarningsMessage = validateEarnings(offer.earnings);
-        boolean validateIsLinkValid = validateIsLinkValid(offer.linkToOffer);
+        List<ValidatorMessage> validateEarningsMessage =validateEarnings(offer.earnings());
+        boolean validateIsLinkValid = validateIsLinkValid(offer.linkToOffer());
         if (!validateIsLinkValid) {
             resultMessages.add(ValidatorMessage.LINK_IS_INVALID);
         }
@@ -34,8 +34,8 @@ class OfferValidator {
 
     private List<ValidatorMessage> validateEarnings(Earnings earnings) {
         List<ValidatorMessage> result = new ArrayList<>();
-        BigDecimal minSalary = earnings.minSalary;
-        BigDecimal maxSalary = earnings.maxSalary;
+        BigDecimal minSalary = earnings.minSalary();
+        BigDecimal maxSalary = earnings.maxSalary();
 
         if (minSalary.compareTo(BigDecimal.ZERO) < 0 || maxSalary.compareTo(BigDecimal.ZERO) < 0) {
             result.add(ValidatorMessage.MIN_SALARY_OR_MAX_SALARY_UNDER_ZERO);

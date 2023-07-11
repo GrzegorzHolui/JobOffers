@@ -1,10 +1,10 @@
 package com.domain.joboffers.offerfacade;
 
-import com.domain.joboffers.offerfacade.dto.OfferDto;
 import com.domain.joboffers.offerfacade.dto.OfferFacadeResultDto;
+import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
+import com.domain.joboffers.offerfacade.dto.OfferResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -16,16 +16,17 @@ public class OfferFacade {
     OfferValidator offerValidator;
     ValidatorMessageConverter validatorMessageConverter;
     OfferModelMapper offerModelMapper;
-    OfferReposiotry offerReposiotry;
+    OfferRepository offerRepository;
 
 
-    public OfferFacadeResultDto saveOffer(Offer offer) {
+    public OfferFacadeResultDto saveOffer(OfferRequestDto offerRequestDto) {
+        Offer offer = offerModelMapper.mapOfferRequestDtoToOffer(offerRequestDto);
         List<ValidatorMessage> validatorMessages = offerValidator.validateData(offer);
         List<String> validatorMessage = validatorMessageConverter.convertMessagesToString(validatorMessages);
         if (validatorMessage.isEmpty()) {
-//            offerReposiotry.save(offer);
-            OfferDto offerDto = offerModelMapper.mapOfferToOfferDto(offer);
-            return new OfferFacadeResultDto(validatorMessage, offerDto);
+            offerRepository.save(offer);
+            OfferResponseDto offerResponseDto = offerModelMapper.mapOfferResponseDtoToOffer(offer);
+            return new OfferFacadeResultDto(validatorMessage, offerResponseDto);
         }
         return new OfferFacadeResultDto(validatorMessage, null);
     }

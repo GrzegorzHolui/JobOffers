@@ -1,5 +1,4 @@
 package com.domain.joboffers.offerfacade;
-import org.mapstruct.factory.Mappers;
 
 public class OfferFacadeConfiguration {
 
@@ -7,9 +6,9 @@ public class OfferFacadeConfiguration {
         return new OfferFacade();
     }
 
-    public OfferFacade offerFacadeTest(OfferReposiotry offerReposiotry, OfferModelMapper offerModelMapper) {
+    public OfferFacade offerFacadeTest(OfferRepository offerRepository, OfferModelMapper offerModelMapper) {
         OfferValidator offerValidator = new OfferValidator();
         ValidatorMessageConverter validatorMessageConverter = new ValidatorMessageConverter();
-        return new OfferFacade(offerValidator, validatorMessageConverter, offerModelMapper, offerReposiotry);
+        return new OfferFacade(offerValidator, validatorMessageConverter, offerModelMapper, offerRepository);
     }
 }
