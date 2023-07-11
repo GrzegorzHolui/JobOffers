@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @AllArgsConstructor
@@ -24,11 +25,17 @@ public class OfferFacade {
         List<ValidatorMessage> validatorMessages = offerValidator.validateData(offer);
         List<String> validatorMessage = validatorMessageConverter.convertMessagesToString(validatorMessages);
         if (validatorMessage.isEmpty()) {
-            offerRepository.save(offer);
-            OfferResponseDto offerResponseDto = offerModelMapper.mapOfferResponseDtoToOffer(offer);
+            Offer save = offerRepository.save(offer);
+            OfferResponseDto offerResponseDto = offerModelMapper.mapOfferResponseDtoToOffer(save);
             return new OfferFacadeResultDto(validatorMessage, offerResponseDto);
         }
         return new OfferFacadeResultDto(validatorMessage, null);
+    }
+
+    public OfferResponseDto findOfferById(String id) {
+        Optional<Offer> offerById = offerRepository.findOfferById(id);
+        return offerById.map(offer -> offerModelMapper.mapOfferResponseDtoToOffer(offer))
+                .orElseThrow(() -> new OfferNotFoundException(id));
     }
 
 }
