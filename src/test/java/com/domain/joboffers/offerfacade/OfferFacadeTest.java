@@ -13,7 +13,6 @@ import org.springframework.dao.DuplicateKeyException;
 
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -36,14 +35,14 @@ class OfferFacadeTest {
     @DisplayName("OfferFacade_saveOffer")
     void saveOffer_thenShouldReturnThatOfferHasBeenCreatedProperly() {
         EarningsRequestDto earnings = new EarningsRequestDto(BigDecimal.valueOf(2000), BigDecimal.valueOf(3000));
-        String id = UUID.randomUUID().toString();
-        OfferRequestDto offer = new OfferRequestDto(id, "https://www.youtube.com", "jobname",
+        OfferRequestDto offer = new OfferRequestDto("https://www.youtube.com", "jobname",
                 "nameOfCompany", earnings);
 
         //when
         OfferFacadeResultDto offerResult = offerFacade.saveOffer(offer);
 
         //then
+        String id = offerResult.offerFacade().id();
         EarningsRequestDto expectedEarnings = earnings;
         OfferResponseDto expectedOffer = new OfferResponseDto(id, "https://www.youtube.com", "jobname",
                 "nameOfCompany", expectedEarnings);
@@ -53,11 +52,10 @@ class OfferFacadeTest {
     }
 
     @Test
-    @DisplayName("OfferFacade_saveOffer")
+    @DisplayName("OfferFacade_saveOfferThrowException")
     void saveOffer_thenShouldThrowDuplicateKeyException() {
         EarningsRequestDto earnings = new EarningsRequestDto(BigDecimal.valueOf(2000), BigDecimal.valueOf(3000));
-        String id = UUID.randomUUID().toString();
-        OfferRequestDto offer = new OfferRequestDto(id, "https://www.youtube.com", "jobname",
+        OfferRequestDto offer = new OfferRequestDto("https://www.youtube.com", "jobname",
                 "nameOfCompany", earnings);
 
         //when
@@ -70,4 +68,47 @@ class OfferFacadeTest {
                 .hasMessage("Offer with offerUrl [https://www.youtube.com] already exists");
     }
 
+    @Test
+    @DisplayName("OfferFacade_findOfferById")
+    void findOfferById_ThenShouldReturnOffer() {
+        //given
+        EarningsRequestDto earnings = new EarningsRequestDto(BigDecimal.valueOf(2000), BigDecimal.valueOf(3000));
+        OfferRequestDto offer = new OfferRequestDto("https://www.youtube.com", "jobname",
+                "nameOfCompany", earnings);
+
+        OfferResponseDto offerFacadeResultDto = offerFacade.saveOffer(offer).offerFacade();
+
+        //when
+        OfferResponseDto offerById = offerFacade.findOfferById(offerFacadeResultDto.id());
+
+        //then
+        OfferResponseDto expectedOffer = OfferResponseDto.builder()
+                .id(offerFacadeResultDto.id())
+                .linkToOffer(offerFacadeResultDto.linkToOffer())
+                .jobName(offerFacadeResultDto.jobName())
+                .nameOfCompany(offerFacadeResultDto.nameOfCompany())
+                .earnings(offerFacadeResultDto.earnings())
+                .build();
+
+        assertThat(offerById).isEqualTo(expectedOffer);
+    }
+
+
+    @Test
+    @DisplayName("OfferFacade_findOfferByIdThrowException")
+    void findOfferById_ThenShouldReturnOfferNotFoundException() {
+        //given
+        EarningsRequestDto earnings = new EarningsRequestDto(BigDecimal.valueOf(2000), BigDecimal.valueOf(3000));
+        OfferRequestDto offer = new OfferRequestDto("https://www.youtube.com", "jobname",
+                "nameOfCompany", earnings);
+
+        //when
+        Throwable thrown = catchThrowable(() -> offerFacade.findOfferById("cos"));
+
+        //then
+        AssertionsForClassTypes.assertThat(thrown)
+                .isInstanceOf(OfferNotFoundException.class)
+                .hasMessage("Offer with id cos not found");
+
+    }
 }
