@@ -10,4 +10,6 @@ interface OfferModelMapper {
 
     Offer mapOfferRequestDtoToOffer(OfferRequestDto OfferRequestDto);
 
+    Offer mapOfferResponseDtoToOffer(OfferResponseDto offerResponseDto);
+
 }

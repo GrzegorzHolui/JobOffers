@@ -14,10 +14,11 @@ import java.util.Optional;
 @NoArgsConstructor
 public class OfferFacade {
 
-    OfferValidator offerValidator;
-    ValidatorMessageConverter validatorMessageConverter;
-    OfferModelMapper offerModelMapper;
-    OfferRepository offerRepository;
+    private OfferValidator offerValidator;
+    private ValidatorMessageConverter validatorMessageConverter;
+    private OfferModelMapper offerModelMapper;
+    private OfferRepository offerRepository;
+    private OfferService offerService;
 
 
     public OfferFacadeResultDto saveOffer(OfferRequestDto offerRequestDto) {
@@ -30,6 +31,13 @@ public class OfferFacade {
             return new OfferFacadeResultDto(validatorMessage, offerResponseDto);
         }
         return new OfferFacadeResultDto(validatorMessage, null);
+    }
+
+    public List<OfferResponseDto> fetchAllOffersAndSaveAllIfNotExists() {
+        return offerService.fetchAllOffersAndSaveAllIfNotExists()
+                .stream()
+                .map(offer -> offerModelMapper.mapOfferResponseDtoToOffer(offer))
+                .toList();
     }
 
     public OfferResponseDto findOfferById(String id) {

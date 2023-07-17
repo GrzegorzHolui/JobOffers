@@ -9,4 +9,8 @@ interface OfferRepository {
     Optional<Offer> findOfferById(String id);
 
     List<Offer> findAllOffers();
+
+    boolean existsByOfferUrl(String s);
+
+    List<Offer> saveAll(List<Offer> offersResult);
 }

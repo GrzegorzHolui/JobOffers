@@ -6,9 +6,12 @@ public class OfferFacadeConfiguration {
         return new OfferFacade();
     }
 
-    public OfferFacade offerFacadeTest(OfferRepository offerRepository, OfferModelMapper offerModelMapper) {
+    public OfferFacade offerFacadeTest(OfferRepository offerRepository, OfferModelMapper offerModelMapper,
+                                       OfferFetchable offerFetchable) {
         OfferValidator offerValidator = new OfferValidator();
         ValidatorMessageConverter validatorMessageConverter = new ValidatorMessageConverter();
-        return new OfferFacade(offerValidator, validatorMessageConverter, offerModelMapper, offerRepository);
+        OfferService offerService = new OfferService(offerFetchable, offerModelMapper, offerRepository);
+        return new OfferFacade(offerValidator, validatorMessageConverter, offerModelMapper, offerRepository,
+                offerService);
     }
 }

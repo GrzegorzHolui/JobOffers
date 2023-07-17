@@ -1,6 +1,7 @@
 package com.domain.joboffers.offerfacade;
 
 import java.util.*;
+import java.util.stream.StreamSupport;
 
 import org.springframework.dao.DuplicateKeyException;
 
@@ -33,4 +34,21 @@ class OfferRepositoryTestImpl implements OfferRepository {
     public List<Offer> findAllOffers() {
         return dataBase.values().stream().toList();
     }
+
+    @Override
+    public boolean existsByOfferUrl(String offerUrl) {
+        long count = dataBase.values()
+                .stream()
+                .filter(offer -> offer.linkToOffer().equals(offerUrl))
+                .count();
+        return count == 1;
+    }
+
+    @Override
+    public List<Offer> saveAll(List<Offer> offersResult) {
+        offersResult.forEach(this::save);
+        return offersResult;
+    }
+
+
 }

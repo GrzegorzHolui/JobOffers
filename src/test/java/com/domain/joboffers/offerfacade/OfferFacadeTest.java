@@ -29,7 +29,8 @@ class OfferFacadeTest {
     void initializeOfferFacade() {
         OfferRepository offerRepository = new OfferRepositoryTestImpl();
         offerFacadeConfiguration = new OfferFacadeConfiguration();
-        offerFacade = offerFacadeConfiguration.offerFacadeTest(offerRepository, offerModelMapper);
+        OfferFetchable offerFetchable = new OfferFatchableTestImpl();
+        offerFacade = offerFacadeConfiguration.offerFacadeTest(offerRepository, offerModelMapper, offerFetchable);
     }
 
     @Test
@@ -135,5 +136,18 @@ class OfferFacadeTest {
         int expectedSize = 3;
         assertThat(resultOffers.size()).isEqualTo(expectedSize);
     }
+
+    @Test
+    @DisplayName("OfferFacadeFetchAllOffers")
+    void fetchAllOffersAndSaveAllIfNotExists_ThenShouldSaveAllExistingOffers() {
+
+        //when
+        List<OfferResponseDto> offerResponseDtos = offerFacade.fetchAllOffersAndSaveAllIfNotExists();
+
+        //then
+        assertThat(offerResponseDtos).hasSize(6);
+
+    }
+
 
 }
