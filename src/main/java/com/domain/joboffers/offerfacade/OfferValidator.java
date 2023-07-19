@@ -8,10 +8,9 @@ import java.util.List;
 
 class OfferValidator {
 
-
     List<ValidatorMessage> validateData(Offer offer) {
         List<ValidatorMessage> resultMessages = new ArrayList<>();
-        List<ValidatorMessage> validateEarningsMessage =validateEarnings(offer.earnings());
+        List<ValidatorMessage> validateEarningsMessage = validateEarnings(offer.earnings());
         boolean validateIsLinkValid = validateIsLinkValid(offer.linkToOffer());
         if (!validateIsLinkValid) {
             resultMessages.add(ValidatorMessage.LINK_IS_INVALID);

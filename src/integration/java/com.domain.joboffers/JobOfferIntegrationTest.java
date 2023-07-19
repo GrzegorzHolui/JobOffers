@@ -1,13 +1,35 @@
 package com.domain.joboffers;
 
-import org.junit.jupiter.api.Test;
 
-public class JobOfferIntegrationTest extends BaseIntegrationTest {
+import com.domain.joboffers.offerfacade.OfferFetchable;
+import com.domain.joboffers.offerfacade.dto.OfferResponseDto;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
+import java.util.List;
+
+public class JobOfferIntegrationTest extends BaseIntegrationTest implements SampleJobOfferResponse {
+
+    @Autowired
+    OfferFetchable offerFetchable;
+
 
     @Test
     public void f() {
 //   typical path: user want to see offers but have to be logged in and external server should have some offers
 //        step 1: there are no offers in external HTTP server (http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com:5057/offers)
+        // given
+        wireMockServer.stubFor(WireMock.get("/offers")
+                .willReturn(WireMock.aResponse()
+                        .withStatus(HttpStatus.OK.value())
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(zeroJobOffer())));
+
+        // when
+        offerFetchable.fetchOffers();
+
 //        step 2: scheduler ran 1st time and made GET to external server and system added 0 offers to database
 //        step 3: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned UNAUTHORIZED(401)
 //        step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)
@@ -24,7 +46,6 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest {
 //        step 15: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 4 offers with ids: 1000,2000, 3000 and 4000
 //        step 16: user made POST /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and offer and system returned CREATED(201) with saved offer
 //        step 17: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 1 offer
-
 
     }
 
