@@ -11,7 +11,6 @@ import java.util.Optional;
 
 
 @AllArgsConstructor
-@NoArgsConstructor
 public class OfferFacade {
 
     private OfferValidator offerValidator;
@@ -34,10 +33,11 @@ public class OfferFacade {
     }
 
     public List<OfferResponseDto> fetchAllOffersAndSaveAllIfNotExists() {
-        return offerService.fetchAllOffersAndSaveAllIfNotExists()
-                .stream()
+        var list = offerService.fetchAllOffersAndSaveAllIfNotExists();
+        var list2 = list.stream()
                 .map(offer -> offerModelMapper.mapOfferResponseDtoToOffer(offer))
                 .toList();
+        return list2;
     }
 
     public OfferResponseDto findOfferById(String id) {
@@ -47,7 +47,7 @@ public class OfferFacade {
     }
 
     public List<OfferResponseDto> findAllOffers() {
-        List<Offer> allOffers = offerRepository.findAllOffers();
+        List<Offer> allOffers = offerRepository.findAll();
         List<OfferResponseDto> result = allOffers.stream().map(offer -> offerModelMapper.mapOfferResponseDtoToOffer(offer))
                 .toList();
         return result;

@@ -29,7 +29,7 @@ class OfferService {
     private List<Offer> filterNotExistingOffers(List<Offer> jobOffers) {
         return jobOffers.stream()
                 .filter(offerDto -> !offerDto.linkToOffer().isEmpty())
-                .filter(offerDto -> !offerRepository.existsByOfferUrl(offerDto.linkToOffer()))
+                .filter(offerDto -> !offerRepository.existsByLinkToOffer(offerDto.linkToOffer()))
                 .collect(Collectors.toList());
     }
 }

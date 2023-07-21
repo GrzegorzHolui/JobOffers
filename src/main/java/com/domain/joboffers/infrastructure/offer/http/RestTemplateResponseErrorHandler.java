@@ -1,4 +1,4 @@
-package com.domain.joboffers.infrastructure.http;
+package com.domain.joboffers.infrastructure.offer.http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatus.Series;

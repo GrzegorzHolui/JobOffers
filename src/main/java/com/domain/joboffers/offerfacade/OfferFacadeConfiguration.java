@@ -10,36 +10,6 @@ import java.util.Optional;
 public class OfferFacadeConfiguration {
 
     @Bean
-    public OfferRepository offerRepository() {
-        return new OfferRepository() {
-            @Override
-            public Offer save(Offer offer) {
-                return null;
-            }
-
-            @Override
-            public Optional<Offer> findOfferById(String id) {
-                return Optional.empty();
-            }
-
-            @Override
-            public List<Offer> findAllOffers() {
-                return null;
-            }
-
-            @Override
-            public boolean existsByOfferUrl(String s) {
-                return false;
-            }
-
-            @Override
-            public List<Offer> saveAll(List<Offer> offersResult) {
-                return null;
-            }
-        };
-    }
-
-    @Bean
     public OfferFacade offerFacade(OfferModelMapper offerModelMapper, OfferFetchable offerFetchable
             , OfferRepository offerRepository) {
         OfferValidator offerValidator = new OfferValidator();

@@ -3,6 +3,7 @@ package com.domain.joboffers.offerfacade;
 import lombok.Getter;
 
 @Getter
+public
 class OfferNotFoundException extends RuntimeException {
 
     public OfferNotFoundException(String offerId) {
