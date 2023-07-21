@@ -34,10 +34,9 @@ public class OfferFacade {
 
     public List<OfferResponseDto> fetchAllOffersAndSaveAllIfNotExists() {
         var list = offerService.fetchAllOffersAndSaveAllIfNotExists();
-        var list2 = list.stream()
+        return list.stream()
                 .map(offer -> offerModelMapper.mapOfferResponseDtoToOffer(offer))
                 .toList();
-        return list2;
     }
 
     public OfferResponseDto findOfferById(String id) {
