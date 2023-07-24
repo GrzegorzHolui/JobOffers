@@ -5,3 +5,7 @@ offer:
 
 scheduling:
   enabled: false
+
+testcontainers:
+  reuse:
+    enable: true
