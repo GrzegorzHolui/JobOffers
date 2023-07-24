@@ -2,6 +2,8 @@ package com.domain.joboffers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -32,8 +35,20 @@ public class BaseIntegrationTest {
     @Autowired
     public MockMvc mockMvc;
 
-    @Container
-    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+//    @Container
+//    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.0.10");
+
+    public static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.0.10");
+
+    @BeforeAll
+    public static void beforeAll() {
+        mongoDBContainer.start();
+    }
+
+    @BeforeEach
+    public void beforeEach() {
+        mongoDBContainer.start();
+    }
 
     @RegisterExtension
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()
