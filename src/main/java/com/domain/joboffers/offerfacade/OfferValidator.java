@@ -44,6 +44,10 @@ class OfferValidator {
             result.add(ValidatorMessage.MIN_SALARY_HAS_BIGGER_VALUE_THAN_MAX_SALARY);
         }
 
+        if (BigDecimal.ZERO.equals(maxSalary)) {
+            result.add(ValidatorMessage.MAX_SALARY_IS_ZERO);
+        }
+
         return result;
     }
 }
