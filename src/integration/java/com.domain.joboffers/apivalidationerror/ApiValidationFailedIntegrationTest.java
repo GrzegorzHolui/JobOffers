@@ -16,48 +16,35 @@ public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
 
     @Test
     public void should_return_400_bad_request_and_validation_message_when_request_is_empty() throws Exception {
-        //given
+        // given
 
-        //when
-        MvcResult mvcResult = mockMvc.perform(post("/offers")
-                        .content("""
-                                {}
-                                """.trim())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-        //then
+        // when
+        MvcResult mvcResult = mockMvc.perform(post("/offers").content("""
+                {}
+                """.trim()).contentType(MediaType.APPLICATION_JSON)).andReturn();
+        // then
         String json = mvcResult.getResponse().getContentAsString();
-        ApiValidationErrorDto resultOfferErrorResponse = objectMapper
-                .readValue(json, ApiValidationErrorDto.class);
+        ApiValidationErrorDto resultOfferErrorResponse = objectMapper.readValue(json, ApiValidationErrorDto.class);
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(400);
-//        assertThat(resultOfferErrorResponse.message()).containsExactlyInAnyOrder();
+        //        assertThat(resultOfferErrorResponse.message()).containsExactlyInAnyOrder();
 
     }
 
     @Test
     public void should_return_400_bad_request_and_validation_message_when_request_is_null() throws Exception {
-        //given
-        OfferRequestDto offerRequestDto =
-                new OfferRequestDto("", "", "", new EarningsRequestDto(null, null));
+        // given
+        OfferRequestDto offerRequestDto = new OfferRequestDto("", "", "", new EarningsRequestDto(null, null));
 
-        //when
-        MvcResult mvcResult = mockMvc.perform(post("/offers")
-                        .content(objectMapper.writeValueAsString(offerRequestDto))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
+        // when
+        MvcResult mvcResult = mockMvc.perform(post("/offers").content(objectMapper.writeValueAsString(offerRequestDto)).contentType(MediaType.APPLICATION_JSON)).andReturn();
 
-        //thenE
+        // thenE
         String json = mvcResult.getResponse().getContentAsString();
         ApiValidationErrorDto resultOfferErrorResponse = objectMapper.readValue(json, new TypeReference<>() {
         });
 
         assertThat(mvcResult.getResponse().getStatus()).isEqualTo(400);
-        assertThat(resultOfferErrorResponse.errors()).containsExactlyInAnyOrder(
-                "linkToOffer should not be empty",
-                "nameOfCompany should not be empty",
-                "jobName should not be empty");
-
+        assertThat(resultOfferErrorResponse.errors()).containsExactlyInAnyOrder("linkToOffer should not be empty", "nameOfCompany should not be empty", "jobName should not be empty");
     }
-
 }

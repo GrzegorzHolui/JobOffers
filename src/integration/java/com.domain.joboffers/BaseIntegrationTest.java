@@ -38,17 +38,8 @@ public class BaseIntegrationTest {
 //    @Container
 //    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.0.10");
 
+    @Container
     public static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:4.0.10");
-
-    @BeforeAll
-    public static void beforeAll() {
-        mongoDBContainer.start();
-    }
-
-    @BeforeEach
-    public void beforeEach() {
-        mongoDBContainer.start();
-    }
 
     @RegisterExtension
     public static WireMockExtension wireMockServer = WireMockExtension.newInstance()

@@ -6,6 +6,8 @@ import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.math.BigDecimal;
@@ -13,11 +15,15 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@Log4j2 public class OfferUrlDuplicateErrorIntegrationTest extends BaseIntegrationTest {
+public class OfferUrlDuplicateErrorIntegrationTest extends BaseIntegrationTest {
+
+    @DynamicPropertySource
+    public static void propertyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+    }
+
     @Test
     public void should_return_duplicate_key_exception_when_added_second_offer_with_same_offer_url() throws Exception {
-
-
 
 
         OfferRequestDto offerRequestDto = OfferRequestDto
