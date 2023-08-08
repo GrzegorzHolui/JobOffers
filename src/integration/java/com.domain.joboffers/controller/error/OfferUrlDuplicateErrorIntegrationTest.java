@@ -28,7 +28,7 @@ public class OfferUrlDuplicateErrorIntegrationTest extends BaseIntegrationTest {
 
         OfferRequestDto offerRequestDto = OfferRequestDto
                 .builder()
-                .linkToOffer("https://kariera.ifirma.pl/junir-java-developer")
+                .linkToOffer("https://kariera.ifirma.pl/junior-java-developer")
                 .jobName("junior-java-developer")
                 .nameOfCompany("IFirma")
                 .earnings(new EarningsRequestDto(BigDecimal.ZERO, BigDecimal.ONE))

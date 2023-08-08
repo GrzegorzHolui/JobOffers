@@ -114,7 +114,7 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
 
         MvcResult getResultWithParameter = mockMvc.perform(get("/offers/" + "9999")).andReturn();
 
-        OfferResponseDto   offerResponseDto = objectMapper.readValue(getResultWithParameter.getResponse()
+        OfferResponseDto offerResponseDto = objectMapper.readValue(getResultWithParameter.getResponse()
                 .getContentAsString(), OfferResponseDto.class);
 
         //then
