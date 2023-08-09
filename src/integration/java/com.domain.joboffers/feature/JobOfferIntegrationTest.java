@@ -3,14 +3,15 @@ package com.domain.joboffers.feature;
 import com.domain.joboffers.BaseIntegrationTest;
 import com.domain.joboffers.SampleJobOfferResponse;
 import com.domain.joboffers.infrastructure.offer.scheduler.OffersScheduler;
+import com.domain.joboffers.infrastructure.loginandregister.controller.dto.TokenRequestDto;
+import com.domain.joboffers.loginandregister.dto.RegisterUserDto;
+import com.domain.joboffers.loginandregister.dto.RegistrationResultDto;
 import com.domain.joboffers.offerfacade.OfferFetchable;
-
 import com.domain.joboffers.offerfacade.dto.EarningsRequestDto;
 import com.domain.joboffers.offerfacade.dto.OfferFacadeResultDto;
 import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
 import com.domain.joboffers.offerfacade.dto.OfferResponseDto;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -58,11 +55,44 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
 
         // step 3:user tried to get JWT token by requesting POST / token with username = someUser, password = somePassword
         // and system returned UNAUTHORIZED (401)
-        // step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)
+        // given & when
+        TokenRequestDto tokenRequestDto = new TokenRequestDto("someUser", "somePassword");
+        MvcResult postToken = mockMvc.perform(post("/token")
+                .content(objectMapper.writeValueAsString(tokenRequestDto))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn();
 
+        // then
+        assertThat(postToken.getResponse().getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+
+        // step 4: user made GET /offers with no jwt token and system returned UNAUTHORIZED(401)
+        MvcResult getToken = mockMvc.perform(get("/offers")
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        assertThat(getToken.getResponse().getStatus()).isEqualTo(HttpStatus.FORBIDDEN.value());
 
         // step 5: user made POST /register with username=someUser, password=somePassword and system registered user with status OK(200)
+        // given && when
+        RegisterUserDto register = new RegisterUserDto("someUser", "somePassword");
+        MvcResult postRegister = mockMvc.perform(post("/register")
+                .content(objectMapper.writeValueAsString(register))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn();
+
+
+        //then
+        RegistrationResultDto registrationResultDto =
+                objectMapper.readValue(postRegister.getResponse().getContentAsString(), RegistrationResultDto.class);
+        assertAll(
+                () -> assertThat(postRegister.getResponse().getStatus()).isEqualTo(HttpStatus.CREATED.value()),
+                () -> assertThat(registrationResultDto.username()).isEqualTo("someUser"),
+                () -> assertThat(registrationResultDto.id()).isNotNull(),
+                () -> assertThat(registrationResultDto.created()).isTrue());
+
+
         // step 6: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned OK(200) and jwttoken=AAAA.BBBB.CCC
+
+
         // step 7: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 0 offers
 
         // given && when

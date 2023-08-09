@@ -1,10 +1,12 @@
-package com.domain.joboffers.loginandregisterfacade;
+package com.domain.joboffers.loginandregister;
 
-import com.domain.joboffers.loginandregisterfacade.dto.RegisterUserDto;
-import com.domain.joboffers.loginandregisterfacade.dto.RegistrationResultDto;
-import com.domain.joboffers.loginandregisterfacade.dto.UserDto;
+import com.domain.joboffers.loginandregister.dto.RegisterUserDto;
+import com.domain.joboffers.loginandregister.dto.RegistrationResultDto;
+import com.domain.joboffers.loginandregister.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+//import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.BadCredentialsException;
 //import org.springframework.security.authentication.BadCredentialsException;
 
 @RequiredArgsConstructor
@@ -16,9 +18,9 @@ public class LoginAndRegisterFacade {
     private UserModelMapper userModelMapper;
 
     public UserDto findByUserName(String username) {
-        User user = loginRepository.findByUserName(username).get();
-//                .orElseThrow(() ->
-//                new BadCredentialsException(USER_NOT_FOUND));
+        User user = loginRepository.findByUserName(username)
+                .orElseThrow(() ->
+                new BadCredentialsException(USER_NOT_FOUND));
         UserDto userDto = userModelMapper.mapUserToUserDto(user);
         return userDto;
     }
