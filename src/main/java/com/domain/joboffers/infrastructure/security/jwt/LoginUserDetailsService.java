@@ -1,5 +1,6 @@
 package com.domain.joboffers.infrastructure.security.jwt;
 
+
 import com.domain.joboffers.loginandregister.LoginAndRegisterFacade;
 import com.domain.joboffers.loginandregister.dto.UserDto;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ public class LoginUserDetailsService implements UserDetailsService {
 
     private org.springframework.security.core.userdetails.User getUser(UserDto user) {
         return new org.springframework.security.core.userdetails.User(
-                user.userName(),
+                user.username(),
                 user.password(),
                 Collections.emptyList());
     }

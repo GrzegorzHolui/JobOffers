@@ -24,7 +24,6 @@ class OfferFacadeTest {
     private OfferModelMapper offerModelMapper = Mappers.getMapper(OfferModelMapper.class);
     private OfferFacade offerFacade;
 
-
     @BeforeEach
     void initializeOfferFacade() {
         OfferRepository offerRepository = new OfferRepositoryTestImpl();
@@ -54,7 +53,7 @@ class OfferFacadeTest {
     }
 
     @Test
-    @DisplayName("OfferFacade_saveOfferThrowException")
+    @DisplayName("OfferFacade_saveOffer_thenShouldThrowDuplicateKeyException")
     void saveOffer_thenShouldThrowDuplicateKeyException() {
         EarningsRequestDto earnings = new EarningsRequestDto(BigDecimal.valueOf(2000), BigDecimal.valueOf(3000));
         OfferRequestDto offer = new OfferRequestDto("https://www.youtube.com", "jobname",

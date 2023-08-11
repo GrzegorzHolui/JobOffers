@@ -21,17 +21,14 @@ class LoginRepositoryTestImpl implements LoginRepository {
         String id = UUID.randomUUID().toString();
         User saveUser = User.builder()
                 .id(id)
-                .userName(user.userName())
+                .username(user.username())
                 .password(user.password())
                 .build();
         dataBase.put(saveUser.id(), saveUser);
         return saveUser;
     }
 
-    @Override
-    public Optional<User> findByUserName(String username) {
-        return dataBase.values().stream().filter(user -> user.userName().equals(username)).findFirst();
-    }
+
 
     @Override
     public <S extends User> List<S> saveAll(Iterable<S> entities) {
@@ -141,5 +138,10 @@ class LoginRepositoryTestImpl implements LoginRepository {
     @Override
     public <S extends User, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return Optional.empty();
     }
 }

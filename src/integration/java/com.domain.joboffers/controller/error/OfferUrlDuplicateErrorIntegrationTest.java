@@ -6,6 +6,7 @@ import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MvcResult;
@@ -23,6 +24,7 @@ public class OfferUrlDuplicateErrorIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     public void should_return_duplicate_key_exception_when_added_second_offer_with_same_offer_url() throws Exception {
 
 

@@ -2,6 +2,7 @@ package com.domain.joboffers.feature;
 
 import com.domain.joboffers.BaseIntegrationTest;
 import com.domain.joboffers.SampleJobOfferResponse;
+import com.domain.joboffers.infrastructure.loginandregister.controller.dto.JwtResponseDto;
 import com.domain.joboffers.infrastructure.offer.scheduler.OffersScheduler;
 import com.domain.joboffers.infrastructure.loginandregister.controller.dto.TokenRequestDto;
 import com.domain.joboffers.loginandregister.dto.RegisterUserDto;
@@ -18,15 +19,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class JobOfferIntegrationTest extends BaseIntegrationTest implements SampleJobOfferResponse {
 
@@ -37,7 +41,7 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
     OffersScheduler offersScheduler;
 
     @Test
-    public void f() throws Exception {
+    public void shouldGoThroughTheAllPath() throws Exception {
         // step 1: there are no offers in external HTTP server (http://ec2-3-120-147-150.eu-central-1.compute.amazonaws.com:5057/offers)
 
         // given && when && then
@@ -92,19 +96,39 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
 
         // step 6: user tried to get JWT token by requesting POST /token with username=someUser, password=somePassword and system returned OK(200) and jwttoken=AAAA.BBBB.CCC
 
+        // given & when
+        ResultActions successLoginRequest = mockMvc.perform(post("/token")
+                .content("""
+                        {
+                        "username": "someUser",
+                        "password": "somePassword"
+                        }
+                        """.trim())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+        );
+        // then
+        MvcResult mvcResult = successLoginRequest.andExpect(status().isOk()).andReturn();
+        String json = mvcResult.getResponse().getContentAsString();
+        JwtResponseDto jwtResponse = objectMapper.readValue(json, JwtResponseDto.class);
+        String token = jwtResponse.token();
+        assertAll(
+                () -> assertThat(jwtResponse.username()).isEqualTo("someUser"),
+                () -> assertThat(token).matches(Pattern.compile("^([A-Za-z0-9-_=]+\\.)+([A-Za-z0-9-_=])+\\.?$"))
+        );
+
 
         // step 7: user made GET /offers with header “Authorization: Bearer AAAA.BBBB.CCC” and system returned OK(200) with 0 offers
-
-        // given && when
-
-        MvcResult mvcResult = mockMvc.perform(get("/offers")).andReturn();
+        MvcResult mvcResultGet = mockMvc.perform(get("/offers")
+                .header("Authorization", "Bearer " + token)
+        ).andReturn();
         List<OfferResponseDto> requestDtos = Arrays.stream(objectMapper.readValue
-                (mvcResult.getResponse().getContentAsString(), OfferResponseDto[].class)).toList();
+                (mvcResultGet.getResponse().getContentAsString(), OfferResponseDto[].class)).toList();
 
         // then
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(200);
+        assertThat(mvcResultGet.getResponse().getStatus()).isEqualTo(200);
         assertThat(requestDtos).hasSize(0);
+
 
         // step 8: there are 2 new offers in external HTTP server
 
@@ -128,7 +152,9 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
         // with 2 offers with ids: 1000 and 2000
 
         // given && when
-        MvcResult mvcResult2nd = mockMvc.perform(get("/offers")).andReturn();
+        MvcResult mvcResult2nd = mockMvc.perform(get("/offers")
+                .header("Authorization", "Bearer " + token)
+        ).andReturn();
         List<OfferResponseDto> requestDtos2nd = Arrays.stream(objectMapper.readValue
                 (mvcResult2nd.getResponse().getContentAsString(), OfferResponseDto[].class)).toList();
 
@@ -142,7 +168,9 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
 
         //given && when
 
-        MvcResult getResultWithParameter = mockMvc.perform(get("/offers/" + "9999")).andReturn();
+        MvcResult getResultWithParameter = mockMvc.perform(get("/offers/" + "9999")
+                .header("Authorization", "Bearer " + token
+                )).andReturn();
 
         OfferResponseDto offerResponseDto = objectMapper.readValue(getResultWithParameter.getResponse()
                 .getContentAsString(), OfferResponseDto.class);
@@ -154,7 +182,9 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
 
         // given && when
         MvcResult getResultWithParameterOfScheduler = mockMvc.perform(get("/offers/" +
-                schedulerResponse.get(0).id())).andReturn();
+                schedulerResponse.get(0).id())
+                .header("Authorization", "Bearer " + token
+                )).andReturn();
 
         // then
         assertThat(getResultWithParameterOfScheduler.getResponse().getStatus()).isEqualTo(200);
@@ -178,7 +208,9 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
         // system returned OK(200) with 4 offers with ids: 1000  ,2000, 3000 and 4000
 
         // given && when
-        MvcResult getResult = mockMvc.perform(get("/offers")).andReturn();
+        MvcResult getResult = mockMvc.perform(get("/offers")
+                .header("Authorization", "Bearer " + token)
+        ).andReturn();
         List<OfferResponseDto> result = Arrays.stream(objectMapper.readValue
                 (getResult.getResponse().getContentAsString(), OfferResponseDto[].class)).toList();
 
@@ -199,6 +231,7 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
 
         // when
         MvcResult mvcResultIfirma = mockMvc.perform(post("/offers")
+                .header("Authorization", "Bearer " + token)
                 .content(objectMapper.writeValueAsString(offerRequestDto))
                 .contentType(MediaType.APPLICATION_JSON)).andReturn();
 

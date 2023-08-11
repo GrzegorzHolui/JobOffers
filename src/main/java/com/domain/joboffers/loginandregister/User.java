@@ -11,10 +11,11 @@ import java.util.Collection;
 
 @Builder
 @Document
-record User(@Id String id, @Indexed(unique = true) String userName, String password)
-
-        implements UserDetails {
-
+record User(
+        @Id String id,
+        @Indexed(unique = true) String username,
+        String password
+) implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -27,7 +28,7 @@ record User(@Id String id, @Indexed(unique = true) String userName, String passw
 
     @Override
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,6 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
 
     @Test
+    @WithMockUser
     public void should_return_400_bad_request_and_validation_message_when_request_is_empty() throws Exception {
         // given
 
@@ -32,6 +34,7 @@ public class ApiValidationFailedIntegrationTest extends BaseIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     public void should_return_400_bad_request_and_validation_message_when_request_is_null() throws Exception {
         // given
         OfferRequestDto offerRequestDto = new OfferRequestDto("", "", "", new EarningsRequestDto(null, null));

@@ -43,13 +43,13 @@
 //        //given
 //        RegisterUserDto registerUserDto = new RegisterUserDto("name", "password");
 //        RegistrationResultDto resultRegister = loginAndRegisterFacade.register(registerUserDto);
-//        String userName = registerUserDto.username();
+//        String username = registerUserDto.username();
 //        //when
-//        UserDto resultUserName = loginAndRegisterFacade.findByUserName(userName);
+//        UserDto resultUserName = loginAndRegisterFacade.findByUserName(username);
 //        //then
 //        UserDto expectedUserDto = UserDto.builder()
 //                .id(resultRegister.id())
-//                .userName(registerUserDto.username())
+//                .username(registerUserDto.username())
 //                .password(registerUserDto.password())
 //                .build();
 //
@@ -61,9 +61,9 @@
 //        //given
 //        RegisterUserDto registerUserDto = new RegisterUserDto("name", "password");
 //        RegistrationResultDto resultRegister = loginAndRegisterFacade.register(registerUserDto);
-//        String userName = registerUserDto.username();
+//        String username = registerUserDto.username();
 //        //when then
 ////        assertThrows(BadCredentialsException.class,
-////                () -> loginAndRegisterFacade.findByUserName("userName"),"User not found");
+////                () -> loginAndRegisterFacade.findByUserName("username"),"User not found");
 //    }
 //}
