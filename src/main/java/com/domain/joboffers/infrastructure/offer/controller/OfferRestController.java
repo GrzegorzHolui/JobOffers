@@ -33,12 +33,12 @@ public class OfferRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<OfferResponseDto>> offers() {
+    public ResponseEntity<List<OfferResponseDto>> findAllOffers() {
         return ResponseEntity.ok(offerFacade.findAllOffers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OfferResponseDto> offers(@PathVariable String id) {
+    public ResponseEntity<OfferResponseDto> findOfferById(@PathVariable String id) {
         return ResponseEntity.ok(offerFacade.findOfferById(id));
     }
 

@@ -4,11 +4,11 @@ import com.domain.joboffers.offerfacade.dto.OfferFacadeResultDto;
 import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
 import com.domain.joboffers.offerfacade.dto.OfferResponseDto;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+
 
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.cache.annotation.Cacheable;
 
 @AllArgsConstructor
 public class OfferFacade {
@@ -45,6 +45,7 @@ public class OfferFacade {
                 .orElseThrow(() -> new OfferNotFoundException(id));
     }
 
+    @Cacheable(cacheNames = "jobOffers")
     public List<OfferResponseDto> findAllOffers() {
         List<Offer> allOffers = offerRepository.findAll();
         List<OfferResponseDto> result = allOffers.stream().map(offer -> offerModelMapper.mapOfferResponseDtoToOffer(offer))

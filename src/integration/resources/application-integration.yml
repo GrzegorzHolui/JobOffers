@@ -6,6 +6,8 @@ offer:
 scheduling:
   enabled: false
 
-testcontainers:
-  reuse:
-    enable: true
+spring:
+  cache:
+    type: none
+    redis:
+      time-to-live: PT10S
