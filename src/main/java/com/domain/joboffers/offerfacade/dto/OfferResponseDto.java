@@ -4,7 +4,6 @@ package com.domain.joboffers.offerfacade.dto;
 import lombok.Builder;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 @Builder
 public record OfferResponseDto(String id, String linkToOffer, String jobName, String nameOfCompany,

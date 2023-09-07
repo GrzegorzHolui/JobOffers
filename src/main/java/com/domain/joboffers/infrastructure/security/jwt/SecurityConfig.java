@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @AllArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtAuthTokenFilter jwtAuthTokenFilter;
@@ -40,11 +42,13 @@ public class SecurityConfig {
         httpSecurity.csrf().disable();
         httpSecurity.authorizeRequests()
                 .antMatchers("/swagger-ui/**").permitAll()
+//                .antMatchers("/swagger-ui.html").hasRole("ADMIN")
                 .antMatchers("/v3/api-docs").permitAll()
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/token/**").permitAll()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
+//                .antMatchers(AUTH_WHITE_LIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .headers().frameOptions().disable()
