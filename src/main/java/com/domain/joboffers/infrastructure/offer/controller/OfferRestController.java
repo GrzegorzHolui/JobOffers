@@ -29,6 +29,9 @@ public class OfferRestController {
     @PostMapping()
     public ResponseEntity<OfferFacadeResultDto> offers(@RequestBody @Valid OfferRequestDto offerRequestDto) {
         OfferFacadeResultDto offerFacadeResultDto = offerFacade.saveOffer(offerRequestDto);
+        if (!offerFacadeResultDto.message().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(offerFacadeResultDto);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(offerFacadeResultDto);
     }
 

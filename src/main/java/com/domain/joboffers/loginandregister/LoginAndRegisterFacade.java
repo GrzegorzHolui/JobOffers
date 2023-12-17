@@ -33,3 +33,5 @@ public class LoginAndRegisterFacade {
         return new RegistrationResultDto(savedUser.id(), savedUser.username(), true);
     }
 }
+
+// Compare this snippet from src/main/java/com/domain/joboffers/loginandregister/LoginRepository.java:

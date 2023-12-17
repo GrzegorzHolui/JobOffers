@@ -5,7 +5,7 @@ import com.domain.joboffers.offerfacade.dto.OfferResponseDto;
 import com.domain.joboffers.offerfacade.dto.OfferResponseWithStrings;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+
 interface OfferModelMapper {
     OfferResponseDto mapOfferResponseDtoToOffer(Offer offer);
 

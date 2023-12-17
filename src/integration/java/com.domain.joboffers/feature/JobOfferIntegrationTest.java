@@ -241,7 +241,7 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
 
         assertAll(() -> assertThat(mvcResultIfirma.getResponse().getStatus()).isEqualTo(201),
                 () -> assertThat(resultOfferFacade.offerFacade().linkToOffer()).isEqualTo(
-                        "https://kariera.ifirma.pl/junir-java-developer"),
+                        "https://kariera.ifirma.pl/java-developer"),
                 () -> assertThat(resultOfferFacade.offerFacade().jobName()).isEqualTo("junior-java-developer"),
                 () -> assertThat(resultOfferFacade.offerFacade().nameOfCompany()).isEqualTo("IFirma"),
                 () -> assertThat(resultOfferFacade.offerFacade().id()).isNotNull());

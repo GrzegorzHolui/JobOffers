@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
@@ -28,8 +29,13 @@ public class OfferControllerErrorHandler {
     @ExceptionHandler(DuplicateKeyException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ResultOfferErrorResponse offerDuplicate() {
-        List<String> message = List.of("Offer url already exists");
+    public ResultOfferErrorResponse offerDuplicate(DuplicateKeyException ex) {
+        List<String> message = new ArrayList<>();
+        if (ex.getMessage().contains("username")) {
+            message.add("This username is already in database");
+        } else if (ex.getMessage().contains("link")) {
+            message.add("This link is already in database");
+        }
         log.warn(message);
         return new ResultOfferErrorResponse(message, HttpStatus.CONFLICT);
     }
