@@ -29,7 +29,6 @@ class LoginRepositoryTestImpl implements LoginRepository {
     }
 
 
-
     @Override
     public <S extends User> List<S> saveAll(Iterable<S> entities) {
         return null;
@@ -51,9 +50,10 @@ class LoginRepositoryTestImpl implements LoginRepository {
     }
 
     @Override
-    public Iterable<User> findAllById(Iterable<String> strings) {
+    public List<User> findAllById(Iterable<String> strings) {
         return null;
     }
+
 
     @Override
     public long count() {

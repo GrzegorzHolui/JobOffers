@@ -1,6 +1,7 @@
 package com.domain.joboffers.infrastructure.loginandregister.controller.dto;
 
-import javax.validation.constraints.NotBlank;
+
+import jakarta.validation.constraints.NotBlank;
 
 public record TokenRequestDto(
         @NotBlank(message = "{username.not.blank}")

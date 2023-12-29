@@ -4,6 +4,7 @@ import com.domain.joboffers.offerfacade.OfferFacade;
 import com.domain.joboffers.offerfacade.dto.OfferFacadeResultDto;
 import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
 import com.domain.joboffers.offerfacade.dto.OfferResponseDto;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+
 import java.util.List;
 
 @RestController
