@@ -49,7 +49,7 @@ public class OfferHttpClient implements OfferFetchable {
             log.info("Success Response Body Returned: " + body);
             List<OfferResponseDto> offerResponseDtos = mapOfferResponseWithStringsToOfferResponse(body);
             return offerResponseDtos;
-        } catch (ResourceAccessException e) {
+        } catch (ResourceAccessException | IllegalArgumentException e){
             log.error("Error while fetching offers using http client: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
