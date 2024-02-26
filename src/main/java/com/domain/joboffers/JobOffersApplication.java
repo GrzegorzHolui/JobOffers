@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableConfigurationProperties(value = {JwtConfigurationProperties.class})
 @EnableMongoRepositories
 @EnableScheduling
-@EnableWebMvc
+//@EnableWebMvc
 public class JobOffersApplication {
 
     public static void main(String[] args) {

@@ -4,15 +4,14 @@ spring:
     redis:
       time-to-live: PT60M
   data:
-    mongodb:
-      #      uri: mongodb://admin:admin@mongo:27017/offers
+    mongodb: #      uri: mongodb://admin:admin@mongo:27017/offers
       uri: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}?authSource=${MONGO_AUTH_SOURCE}
       #      uri: mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB_NAME}
       #      uri: mongodb://admin:admin@localhost:27017/offers
       auto-index-creation: true
     redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:63792}
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER

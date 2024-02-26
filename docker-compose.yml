@@ -40,8 +40,8 @@ services:
 
   job-offers:
     container_name: job-offers
-    build: .
-#    image: joboffers2-job-offers:latest
+#    build: .
+    image: joboffers2-job-offers:latest
     restart: always
     ports:
       - "8000:8000"
