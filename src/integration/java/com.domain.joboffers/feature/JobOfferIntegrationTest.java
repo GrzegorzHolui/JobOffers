@@ -14,6 +14,7 @@ import com.domain.joboffers.offerfacade.dto.OfferRequestDto;
 import com.domain.joboffers.offerfacade.dto.OfferResponseDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Log4j2
 public class JobOfferIntegrationTest extends BaseIntegrationTest implements SampleJobOfferResponse {
 
     @Autowired
@@ -160,6 +162,9 @@ public class JobOfferIntegrationTest extends BaseIntegrationTest implements Samp
         ).andReturn();
         List<OfferResponseDto> requestDtos2nd = Arrays.stream(objectMapper.readValue
                 (mvcResult2nd.getResponse().getContentAsString(), OfferResponseDto[].class)).toList();
+
+        log.info(schedulerResponse);
+        log.info(requestDtos2nd);
 
         // then
         assertThat(schedulerResponse.get(0)).isEqualTo(requestDtos2nd.get(0));

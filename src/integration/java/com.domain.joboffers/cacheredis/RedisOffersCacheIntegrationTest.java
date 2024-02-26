@@ -1,7 +1,5 @@
 package com.domain.joboffers.cacheredis;
 
-import java.time.Duration;
-
 import com.domain.joboffers.BaseIntegrationTest;
 import com.domain.joboffers.infrastructure.loginandregister.controller.dto.JwtResponseDto;
 import com.domain.joboffers.offerfacade.OfferFacade;
@@ -16,6 +14,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
+
+import java.time.Duration;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.atLeast;
