@@ -4,7 +4,6 @@ import com.domain.joboffers.BaseIntegrationTest;
 import com.domain.joboffers.JobOffersApplication;
 import com.domain.joboffers.offerfacade.OfferFetchable;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 

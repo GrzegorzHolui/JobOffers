@@ -142,6 +142,8 @@ class LoginRepositoryTestImpl implements LoginRepository {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return Optional.empty();
+        return dataBase.entrySet().stream().filter(entry -> entry.getValue().username().equals(username))
+                .map(entry -> entry.getValue())
+                .findFirst();
     }
 }
