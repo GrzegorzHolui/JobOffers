@@ -49,9 +49,10 @@ During the development of this project I had to face of a bunch of problems. The
  -  Stick to the SOLID rules
  -  AWS deploying with EC2 and ECR
 
+## C3 diagram:
+![Project JobOffers](jobOffers.png)
 
-
-## How to build the project on your own
+_#_# How to build the project on your own
 #### To build the project:
 
 ##### 1. Clone the repository: #####
