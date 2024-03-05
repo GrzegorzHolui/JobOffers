@@ -1,8 +1,7 @@
 
 # Job Offers - Backend
 
-A brief description of what this project does and who it's for
-
+A brief description of what this project does and who it's forThis project is a web application created in Spring Boot which allows users to search for and add new job offers. To build the architecture of the project, I used the Ports-and-Adapters pattern. This project's goal is to group offers from all sites in one place.
 
 ## API Reference
 
